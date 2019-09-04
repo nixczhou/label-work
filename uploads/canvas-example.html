@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="600" height="500" style="border:1px solid #d3d3d3;"></canvas>
+
+<img id="scream" src="https://ixxidesign.azureedge.net/media/1676571/Mickey-Mouse-2.jpg?mode=max&width=562&height=613" alt="Smiley face" width="42" height="42" style="display:none;">
+
+
+<script>
+  window.onload = function() {
+  var c=document.getElementById("myCanvas");
+  var ctx=c.getContext("2d");
+  var img=document.getElementById("scream");  
+  ctx.drawImage(img,10,10);  
+  var canvas = document.getElementById('myCanvas');
+  var context = canvas.getContext('2d');
+
+  context.beginPath();
+  context.rect(188, 50, 200, 200);
+  context.lineWidth = 7;
+  context.strokeStyle = 'black';
+  context.stroke();
+}
+</script> 
+
+</body>
+</html>
