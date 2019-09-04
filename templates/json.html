@@ -1,0 +1,74 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('a#test').bind('click', function() {
+            $.getJSON('/background_process_test',
+                function(data) {
+              //do nothing
+            });
+            console.log($(".header_pic img").attr("src"));
+            return false;
+          });
+
+
+          $(".header_det").click(function() {
+            //$(".header_pic img").attr("src", "uploads/cat.3984.jpg");
+
+            $("div").animate({left: '250px'});
+
+            if($(".header_pic img").attr("src") == "uploads/cat.3983.jpg") { 
+                $(".header_pic img").attr("src", "uploads/cat.3984.jpg"); 
+                //$(".header_pic img").attr("width", "300");
+                $(".header_pic img").animate({left: '250px'}); 
+                console.log("Done");        
+            } else {
+                $(".header_pic img").attr("src", "uploads/cat.3985.jpg");
+            }
+
+            console.log($(".header_pic img").attr("src"));
+            
+          });
+        });
+
+        function submit_good() {
+            var myData = $(".header_pic img").attr("src");
+            $.post("/receive_good", {"myData": myData});
+        }
+
+        function submit_notgood() {
+            var myData = $(".header_pic img").attr("src");
+            $.post("/receive_notgood", {"myData": myData});
+        }
+</script>
+
+
+<div class='container'>
+    <h3>Test</h3>
+        <form>
+            <a href=# id=test><button class='btn btn-default'>Test</button></a>
+        </form>
+
+        <button class='header_det btn btn-default'>Change</button>
+
+        <button onclick=submit_good()>Good!</button>
+        <button onclick=submit_notgood()>Not Good!</button>
+
+        <li class="header_det">
+            <table width="100%" style="font-size:14px;"> 
+            <tr>                                      
+                <td width="80%">
+                    <img width="130" height="130" src="uploads/cat.3984.jpg" />
+                </td>                                                                             
+                <td width="10%" align="center" class="header_pic">
+                    <img width="120" height="120" src="uploads/cat.3983.jpg" />
+                </td>                  
+            </tr>                                                                           
+            </table>
+        </li>
+
+      <div style="background:#98bf21;height:100px;width:100px;position:absolute;"></div>
+
+
+      
+
+</div>

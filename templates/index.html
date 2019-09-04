@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  </head>
+  <body style="margin:0;">
+    <ul>
+      <li><a href="/">Label/Upload</a></li>
+      <li><a href="/train">Train</a></li>
+      <li><a href="http://127.0.0.1:5000">DIGITS</a></li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">More</a>
+        <div class="dropdown-content">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+      </li>
+      <li style="float: right;"><a href="#">About</a></li>
+    </ul>    
+    <div class="content">
+      <div class="header">
+        <h3 class="text-muted" style="color: black;">Welcome !</h3>
+        <h4 class="text-muted" style="color: red;">* Please upload your files and press upload!</h4>
+      </div>
+      <hr/>
+      <div>
+      
+      <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="file" multiple="" name="file[]" class="span3" />
+        <input type="submit" value="Upload"  class="span2">
+      </form>
+      </div>
+    </div>
+  </body>
+</html>

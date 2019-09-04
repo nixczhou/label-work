@@ -1,0 +1,9 @@
+{
+  "window": [
+    {"name":"w1", "posx": -30, "posy" : 0, "width" : 45, "height" : 32, "rotation": 0},
+    {"name":"w2", "posx": 0, "posy" : 0, "width" : 40, "height" : 32, "rotation": 0},
+    {"name":"w3", "posx": 30, "posy" : 0, "width" : 40, "height" : 32, "rotation": 0},
+    {"name":"w4", "posx": 20, "posy" : 10, "width" : 40, "height" : 20, "rotation": 0},
+    {"name":"w5", "posx": -20, "posy" : 10, "width" : 40, "height" : 20, "rotation": 0}
+  ]
+}

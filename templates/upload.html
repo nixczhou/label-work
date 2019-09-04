@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  </head>
+  <body style="margin:0;">
+    <ul class="topnav">
+    <li><a href="/">Label/Upload</a></li>
+      <li><a href="/train">Train</a></li>
+    <li><a href="http://127.0.0.1:5000">DIGITS</a></li>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">More</a>
+      <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </li>
+    <li style="float: right;"><a href="#">About</a></li>
+  </ul>
+    <div class="content">
+      <div class="header">
+        <h3>Uploaded files</h3>
+      </div>
+      <hr/>
+      <div>
+      This is a list of the files you just uploaded, click on them to load/download them
+      <input type ="button" onclick="javascript:location.href='/crop'" value="Start Label"></input>
+      <input type ="button" onclick="javascript:location.href='/predict'" value="INFERENCE"></input>
+      <br>
+      <br>
+      <ol>
+        {% for file in filenames %}
+          <li style="float:none;"><a style="color:black; padding:0;" href="{{url_for('uploaded_file', filename=file)}}">{{file}}</a></li>
+        {% endfor %}
+      </ol>
+      </div>
+      </div>
+    </div>
+  </body>
+</html>

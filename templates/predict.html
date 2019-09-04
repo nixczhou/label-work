@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Label</title>
+    <style>
+      .unselected{border:0px;}
+      .selected { border: 3px solid #FF0000; }
+      /* This is used to "clear" the floated elements */
+    .images { overflow: hidden; width: 100% }
+
+    /* float the elements so that white space does not matter */
+    .images img { float: left; height: 200px; }
+
+    .images-nofloat img {height: 200px; }
+    </style>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+  <script>
+      var original_array = [];
+      var count = Number("{{count}}");
+      var uploaded_image = Number("{{uploaded_image}}")
+      console.log(count)
+      console.log(uploaded_image)
+
+      {% for file3 in original %}
+      original_array[{{ loop.index0 }}] = "{{ file3 }}";
+      {% endfor %}
+
+          function done(){
+            count = count + 1;
+            $.post("/done", {"count": count});
+            if (count == uploaded_image ){
+              setTimeout(function(){
+                location.replace("/");
+              },1000)
+            }
+            else{
+              setTimeout(function(){
+              location.replace("/crop");
+            },1000)
+            }
+          } 
+
+  </script>
+
+</head>
+<body style="margin:0;">
+  <ul class="topnav">
+    <li><a href="/">Label/Upload</a></li>
+    <li><a href="/train">Train</a></li>
+    <li><a href="http://127.0.0.1:5000">DIGITS</a></li>
+    <li class="dropdown">
+      <a href="javascript:void(0)" class="dropbtn">More</a>
+      <div class="dropdown-content">
+        <a href="#">Link 1</a>
+        <a href="#">Link 2</a>
+        <a href="#">Link 3</a>
+      </div>
+    </li>
+    <li style="float: right;"><a href="#">About</a></li>
+  </ul>
+
+  <div class="content">
+    <h3>Original PCB Image</h3>
+
+    <canvas id="myCanvas" width="500" height="200" style="border:1px solid #d3d3d3;"></canvas>
+
+    <img id="scream" src="{{ original }}" style="display:none;">
+
+      <h2>Predicted Result OK = {{ok}} , NG = {{ng}}</h2>
+      {% for file in files %}
+      <p>Directory : {{file}}</p>
+      <img style="width:20%;" src="{{file}}">
+      <h3>Result : {{result[loop.index0]}}</h3>
+      {% endfor %}
+
+
+  <script>
+    var stats = [];
+    var coordinate = [];
+    var x = [];
+    var y = [];
+    var w = [];
+    var h = [];
+    var num = 0;
+
+    {% for pos_x in x_json %}
+     num = Number("{{ pos_x }}");
+     x[{{ loop.index0 }}] = 180 + num*5;
+    {% endfor %}
+
+    {% for pos_y in y_json %}
+     num = Number("{{ pos_y }}");
+     y[{{ loop.index0 }}] = num*2 + 20;
+    {% endfor %}
+
+    {% for width in w_json %}
+     num = Number("{{ width }}");
+     w[{{ loop.index0 }}] = num+100;
+    {% endfor %}
+
+    {% for height in h_json %}
+     num = Number("{{ pos_y }}");
+     h[{{ loop.index0 }}] = num+120;
+    {% endfor %}
+
+    console.log(x);
+    console.log(y);
+
+    {% for array in status %}
+     stats[{{ loop.index0 }}] = "{{ array }}";
+    {% endfor %}
+
+    console.log(stats);
+
+    function getCursorPosition(canvas, event) {
+      const rect = canvas.getBoundingClientRect()
+      const x = event.clientX - rect.left
+      const y = event.clientY - rect.top
+      document.getElementById("x").innerHTML = x;
+    document.getElementById("y").innerHTML = y;
+      console.log("x: " + x + " y: " + y);
+      coordinate[0] = x;
+      coordinate[1] = y;
+      $.post("/calculate", {"coordinate[]": coordinate});
+      setTimeout(function(){
+        location.replace("/crop");
+      },300)
+      //location.replace("/crop");
+    }
+    window.onload = function() {
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    var img=document.getElementById("scream");  
+    ctx.drawImage(img,10,10, 500, 200);  
+    var canvas = document.getElementById('myCanvas');
+    canvas.addEventListener('mousedown', function(e) {
+      getCursorPosition(canvas, e)
+    })
+    var context = canvas.getContext('2d');
+
+    context.beginPath();
+    var i;
+    //var x = [30, 180, 330]
+    //var y = [20, 20, 20]
+    for (i = 0; i < stats.length; i++){
+      if(stats[i] == 'NG'){
+        context.rect(x[i], y[i], w[i], h[i]);
+      }
+    }
+    context.lineWidth = 7;
+    context.strokeStyle = 'red';
+    context.stroke();
+  }
+  </script> 
+
+
+  </div>
+
+
+  
+</body>
+
+
+</html>

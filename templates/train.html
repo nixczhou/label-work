@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  </head>
+  <body style="margin:0;">
+    <ul>
+      <li><a href="/">Label/Upload</a></li>
+      <li><a href="/train">Train</a></li>
+      <li><a href="http://127.0.0.1:5000">DIGITS</a></li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">More</a>
+        <div class="dropdown-content">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+      </li>
+    </ul>    
+    <div class="content">
+      <div class="header">
+        <h3 class="text-muted" style="color: black;">Training Complete !</h3>
+        <h4 class="text-muted" style="color: black;">Test result : </h4>
+        <h4 class="text-muted" style="color: red;">Loss:{{loss}}</h4>
+        <h4 class="text-muted" style="color: green;">Acc:{{acc}}</h4>
+        <h4 class="text-muted" style="color: blue;">Top_acc:{{top_acc}}</h4>
+      </div>
+      <hr/>
+      <div>
+      </div>
+    </div>
+  </body>
+</html>

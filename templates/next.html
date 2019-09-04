@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Label</title>
+    <style>
+    	.unselected{border:0px;}
+    	.selected { border: 3px solid #FF0000; }
+    	/* This is used to "clear" the floated elements */
+		.images { overflow: hidden; width: 100% }
+
+		/* float the elements so that white space does not matter */
+		.images img { float: left; height: 200px; }
+    </style>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+	<script>
+			var submit = [];		
+
+	        function done() {
+	        	if(k > original_array.length){
+	        		submit[0] = 'end'
+					submit[1] = 'end'
+					submit[2] = 'end'
+	        		$.post("/receiver", {"submit[]": submit});
+	        	}
+	        	else{
+		        	$(".header_pic_ori img").attr("src" , original_array[k]);
+		            k = k + 1;
+		            console.log(submit);
+		            $.post("/receiver", {"submit[]": submit});
+		            $(".images #1").attr("src" , right_array[a]);
+		            $(".images #2").attr("src" , center_array[j]);
+		            $(".images #3").attr("src" , right_array[b]);
+		            a = a + 2;
+		            j = j + 1;
+		            b = b + 2;
+		            $('.images img').removeClass('selected');
+				  	$(".header_pic_ori").removeClass('wrapper-center');
+					$(".header_pic_ori .center").removeClass('box-center');
+					$(".header_pic_ori").removeClass('wrapper-left');
+					$(".header_pic_ori .left").removeClass('box-left');
+					$(".header_pic_ori").removeClass('wrapper-right');
+					$(".header_pic_ori .right").removeClass('box-right');
+					submit[0] = 'good|' + $('.images #2').attr("src"); //center
+					submit[1] = 'good|' + $('.images #1').attr("src"); //left
+					submit[2] = 'good|' + $('.images #3').attr("src"); //right
+	        	}	                  
+	        }
+
+	        function next(){
+	        	location.reload(true);
+	        }
+
+
+	        $('.images img').live('click', function(){
+			    var $this = $(this);
+			    $this.toggleClass('selected');
+			    
+			    if($this.hasClass('selected')){
+			        $this.next(':hidden').val('notgood|' + $this.attr("src"));
+			    	$this.attr("alt", 'notgood|' + $this.attr("src"));
+			    }
+			    else{
+			        $this.next(':hidden').val('good|' + $this.attr("src"));
+			        $this.attr("alt", 'good|' + $this.attr("src"));
+			    }
+			});
+
+			$('form').submit(function(){
+			    console.log($(this).serialize());
+			    //var myData = $(".header_pic2 img").attr("src");
+	            //$.post("/receive_notgood", {"myData": myData});
+	            $(".images img").attr("src" , right_array[j]);
+	            j = j + 1; 
+			    return false;
+			})
+
+			$('.box-center').live('click', function(){
+		  		if($(".header_pic_ori").hasClass('wrapper-center')==true && $(".header_pic_ori div").hasClass('box-center')==true){
+			  	  $(".header_pic_ori").removeClass('wrapper-center');
+				  $(".header_pic_ori div").removeClass('box-center');
+				  $('.images #2').removeClass('selected');
+				  submit[0] = 'good|' + $('.images #2').attr("src");		
+				}
+			});
+
+			$('.box-right').live('click', function(){
+		  		if($(".header_pic_ori").hasClass('wrapper-right')==true && $(".header_pic_ori div").hasClass('box-right')==true){
+			  	  $(".header_pic_ori").removeClass('wrapper-right');
+				  $(".header_pic_ori div").removeClass('box-right');
+				  $('.images #3').removeClass('selected');
+				  submit[1] = 'good|' + $('.images #3').attr("src");		
+				}
+			});
+
+			$('.box-left').live('click', function(){
+		  		if($(".header_pic_ori").hasClass('wrapper-left')==true && $(".header_pic_ori div").hasClass('box-left')==true){
+			  	  $(".header_pic_ori").removeClass('wrapper-left');
+				  $(".header_pic_ori div").removeClass('box-left');
+				  $('.images #1').removeClass('selected');
+				  submit[2] = 'good|' + $('.images #1').attr("src");		
+				}
+			});
+
+	</script>
+
+
+
+	<script>
+		<!--
+
+		coor_x = 0;
+		coor_y = 0;
+
+		function FindPosition(oElement)
+		{
+		  if(typeof( oElement.offsetParent ) != "undefined")
+		  {
+		    for(var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent)
+		    {
+		      posX += oElement.offsetLeft;
+		      posY += oElement.offsetTop;
+		    }
+		      return [ posX, posY ];
+		    }
+		    else
+		    {
+		      return [ oElement.x, oElement.y ];
+		    }
+		}
+
+		function GetCoordinates(e)
+		{
+		  var PosX = 0;
+		  var PosY = 0;
+		  var ImgPos;
+		  ImgPos = FindPosition(myImg);
+		  if (!e) var e = window.event;
+		  if (e.pageX || e.pageY)
+		  {
+		    PosX = e.pageX;
+		    PosY = e.pageY;
+		  }
+		  else if (e.clientX || e.clientY)
+		    {
+		      PosX = e.clientX + document.body.scrollLeft
+		        + document.documentElement.scrollLeft;
+		      PosY = e.clientY + document.body.scrollTop
+		        + document.documentElement.scrollTop;
+		    }
+		  PosX = PosX - ImgPos[0];
+		  PosY = PosY - ImgPos[1];
+		  document.getElementById("x").innerHTML = PosX;
+		  document.getElementById("y").innerHTML = PosY;
+		  if(PosX >= 130 && PosX <= 330 && $(".header_pic_ori").hasClass('wrapper-center')==false && $(".header_pic_ori .center").hasClass('box-center')==false){
+			  $(".header_pic_ori").toggleClass('wrapper-center');
+			  $(".header_pic_ori .center").toggleClass('box-center');
+			  $('.images #2').toggleClass('selected');
+			  submit[0] = 'notgood|' + $('.images #2').attr("src");
+		  }
+		  else if(PosX >= 0 && PosX <= 129 && $(".header_pic_ori").hasClass('wrapper-left')==false && $(".header_pic_ori .left").hasClass('box-left')==false){
+			  $(".header_pic_ori").toggleClass('wrapper-left');
+			  $(".header_pic_ori .left").toggleClass('box-left');
+			  $('.images #1').toggleClass('selected');
+			  submit[1] = 'notgood|' + $('.images #1').attr("src");
+		  }
+		  else if(PosX >= 131 && PosX <= 466 && $(".header_pic_ori").hasClass('wrapper-right')==false && $(".header_pic_ori .right").hasClass('box-right')==false){
+			  $(".header_pic_ori").toggleClass('wrapper-right');
+			  $(".header_pic_ori .right").toggleClass('box-right');
+			  $('.images #3').toggleClass('selected');
+			  submit[2] = 'notgood|' + $('.images #3').attr("src");
+		  }
+		  coor_x = PosX;
+		  coor_y = PosY;
+		  console.log("x: " + coor_x);
+		  console.log("y: " + coor_y);
+		}
+
+		//-->
+	</script>
+
+</head>
+<body style="margin:0;">
+	<ul class="topnav">
+	  <li><a href="/">Home</a></li>
+	  <li><a href="/crop">Label</a></li>
+	  <li><a href="http://127.0.0.1:5000">DIGITS</a></li>
+	  <li class="dropdown">
+	    <a href="javascript:void(0)" class="dropbtn">More</a>
+	    <div class="dropdown-content">
+	      <a href="#">Link 1</a>
+	      <a href="#">Link 2</a>
+	      <a href="#">Link 3</a>
+	    </div>
+	  </li>
+	  <li style="float: right;"><a href="#">About</a></li>
+	</ul>
+	<div class="content">
+		<h3>You can start Labeling now !</h3>
+		<h4 style="color:red;">Please Select the NG part, and press Done.</h4>
+		<p>X:<span id="x"></span></p>
+		<p>Y:<span id="y"></span></p>
+
+		<h4>Original image :</h4>
+			<div class="header_pic_ori">
+				<img id="myImgId" style="width:40%;" src="{{ original }}" style="width: 10%" alt="User Image">
+				<div class="center"></div>
+				<div class="left"></div>
+				<div class="right"></div>
+			</div>
+			<button onclick=done()>Done</button>
+			<button onclick=next()>Next</button>
+		<br>
+
+		<script type="text/javascript">
+			<!--
+			var myImg = document.getElementById("myImgId");
+			myImg.onmousedown = GetCoordinates;
+			//-->
+		</script>
+
+	    <form>
+
+	    <h4>Cropped : (Left, Center, Right)</h4>
+	    <div class="images">
+	        <img style="width:20%; transform: rotate(-180deg);" id="1" src="{{ right }}"/>
+	        <input type="hidden" name="images1" />
+	        <img style="width:20%;" id="2" src="{{ center }}" />
+	        <input type="hidden" name="images2" />
+	        <img style="width:20%;" id="3" src="{{ right }}" />
+	        <input type="hidden" name="images3" />
+	        <!--{% for filess in right %}
+	        <img style="width:20%;" id="{{loop.index0}}" src="{{ filess }}" />
+	        <input type="hidden" name="images3" />
+	        {% endfor %}-->
+	    </div>
+	    <br>
+	    <!--<input style="color : green;" type="submit" value="Submit" />-->
+		</form>
+
+
+	</div>
+	
+</body>
+
+<script>
+			submit[0] = 'good|' + $('.images #2').attr("src"); //center
+			submit[1] = 'good|' + $('.images #1').attr("src"); //left
+			submit[2] = 'good|' + $('.images #3').attr("src"); //right
+</script>
+
+
+</html>
