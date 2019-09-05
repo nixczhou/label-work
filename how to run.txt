@@ -1,0 +1,19 @@
+How to run the program :
+
+Running the docker conrtainer via terminal:
+docker restart digit 
+docker exec -it digit /bin/bash
+cd root/flask-final
+python main.py
+
+The webpage can be accessed in 172.13.0.2(Or the server IP)
+
+Port 
+5000 -> DIGITS
+5001 -> Label , Train, and Inference
+
+Label and Inference images can be uploaded using the uploader
+
+Training Data will be automatically saved after labelling finished.
+
+When labelling completed, it will automatically back to upload page.
